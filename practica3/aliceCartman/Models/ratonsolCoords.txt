@@ -1,4 +1,0 @@
-ratonsol.txt
--p 0 0 0
--r 
--s 1
