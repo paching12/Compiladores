@@ -16,6 +16,7 @@ Racional* racionalResta(Racional *r, Racional *s);
 Racional* racionalMultiplicar(Racional *r, Racional *s);
 Racional* racionalDividir(Racional *r, Racional *s);
 int esIgual(Racional *r, Racional *s);
+double convertirRacionalDouble( Racional * r );
 void imprimirR(void *r);
 Racional *copiar(Racional *r);
 

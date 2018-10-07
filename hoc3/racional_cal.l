@@ -12,17 +12,38 @@ extern YYSTYPE yylval;
 op [-+*/()=]
 ws [ \t]+
 digits [0-9]
-letters[A-Za-z]
+letters [A-Za-z]+
 number (0|[1-9]+{digits}*)
 sub [n]
 fr [+]
 racionalnum {ws}*{sub}?{ws}*{number}{ws}*{fr}{ws}*{number}{ws}*
-vars {ws}*{letters}+{digits}*{ws}*
+NUMBER {ws}*{sub}?{ws}*{digits}+{ws}*[\.]?{ws}*{digits}*{ws}*
 %%
-{vars} {
-  RmWs(yytext); 
-  printf("(%s)", yytext);
-  return yylval.sym;
+{letters} {
+  RmWs(yytext);
+  Symbol *s;
+  // int c;
+  // char sbuf[200], *p=sbuf;
+  // do {
+  //   *p++=c;
+  //   printf("%s\n", sbuf );
+  // } while ( ( c=getchar())!=EOF && isalnum(c) );
+  if( ( s = lookup(yytext) ) == (Symbol *) NULL )
+    s = install( yytext, INDEF, 0.0 );
+
+  yylval.sym=s;
+  if(s->type == INDEF){
+    // printf(":%s\n", "nueva" );
+    return VAR;
+  }
+  else {
+    return s->type;
+  }
+}
+{NUMBER} {
+  RmWs(yytext);
+  sscanf(yytext, "%lf", &yylval.val);
+  return NUMBER;
 }
 {racionalnum} {
  int num, den;

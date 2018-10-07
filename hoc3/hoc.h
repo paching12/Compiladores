@@ -1,10 +1,8 @@
 #include <string.h>
 #include <stdio.h>
 
-
 typedef struct Symbol { /* entrada de la tabla de símbolos */
 	char   *name;
-	// RacionalAP racional_;
 	short   type;   /* VAR, BLTIN, UNDEF */
 	union {
 		double val;	       /* si es VAR */

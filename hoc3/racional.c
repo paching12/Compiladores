@@ -47,6 +47,11 @@ Racional* racionalDividir(Racional *r, Racional *s){
 int esIgual(Racional *r, Racional *s){
 	return (r -> num * s -> den) == (r -> den * s -> num);
 }
+double convertirRacionalDouble( Racional * r ) {
+	int n = numerador( r );
+	int d = denominador( r );
+	return ( d != 0 ) ? ( (double) n/d ) : 0;
+} // end convertirRacionalDouble
 void imprimirR(void *r){
 	Racional *p = (Racional*)r;
 	printf(" = (%d / %d)\n",p -> num, p -> den);

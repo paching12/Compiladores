@@ -24,7 +24,7 @@ extern double Pow(double, double);
 %token <sym> VAR BLTIN INDEF
 %type <val> expr asgn
 
-%right '='
+// %right '='
 %left '+' '-'
 %left '*' '/'
 %left UNARYMINUS
@@ -33,30 +33,37 @@ extern double Pow(double, double);
 %% /* A continuación las reglas gramaticales y las acciones */
 list:   
 	| list '\n'
-	| list asgn '\n'
+	| list asgn '\n' { printf("%s\n", "assing" ); }
 	| list expr '\n'  { printf("\t%.8g\n", $2); }
 	| list error '\n' { yyerrok; } 
 	;
-asgn:	VAR '=' expr { $$=$1->u.val=$3; $1->type=VAR;}
+asgn:	VAR '=' expr {$$=$1->u.val=$3; $1->type=VAR;}
 	;
-expr:      NUMBER { $$ = $1; }
+expr:    NUMBER { $$ = $1; }
 	| VAR { if($1->type == INDEF)
-			execerror("variable no definida",$1->name);
+				execerror("variable no definida ",$1->name);
 			$$=$1->u.val;
+			printf("%s\n", "VAR definida");
 	      }
 	| asgn
 	| BLTIN  '(' expr ')' { $$=(*($1->u.ptr))($3);}
-        | expr '+' expr     { $$ = $1+$3;  }
-        | expr '-' expr     { $$ = $1-$3;  }
-        | expr '*' expr     { $$ = $1*$3;  }
-        | expr '/' expr     { 
-		if($3==0.0)
-			execerror("division por cero", "");
-		$$ = $1/$3; }
+		| expr '+' expr { $$ = $1 + $3; }
+		| expr '-' expr { $$ = $1 - $3; }
+		| expr '*' expr { $$ = $1 * $3; }
+		| expr '/' expr { $$ = $1 / $3; }
 	| expr '^' expr     { $$=Pow($1, $3);}
-        | '(' expr ')'      { $$ = $2;}
+    | '(' expr ')'      { $$ = $2;}
 	| '-' expr %prec UNARYMINUS { $$= -$2; }
-	// | racionalnum
+
+	| racionalnum { 
+		if($1 -> den==0.0)
+			execerror("division por cero", "");
+		$$ = convertirRacionalDouble( $1 ); 
+	}
+      | racionalnum '+' racionalnum { $$ = convertirRacionalDouble( racionalSuma( $1, $3 ) ); }
+      | racionalnum '-' racionalnum { $$ = convertirRacionalDouble( racionalResta( $1, $3 ) ); }
+      | racionalnum '*' racionalnum { $$ = convertirRacionalDouble( racionalMultiplicar( $1, $3 ) ); }
+      | racionalnum '/' racionalnum { $$ = convertirRacionalDouble( racionalDividir( $1, $3 ) ); }
 	;
 %%
 

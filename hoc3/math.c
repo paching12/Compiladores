@@ -6,9 +6,6 @@ extern    int	errno;
 double    errcheck();
 
 
-
-
-
 double  Log(Racional *x)
 {
 
