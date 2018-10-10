@@ -1,13 +1,14 @@
 #include <stdio.h>
 
 struct racional {
-	int num, den;
+	int num, den, type;
+	double dec;
 };
 
 typedef struct racional Racional;
 typedef struct racional* RacionalAP;
 /*  prototypes of the provided functions */ 
-Racional *creaRacional(int num, int den);
+Racional *creaRacional(int num, int den, double dec, int type  );
 void asignar(Racional *r, int num, int den);
 int numerador(Racional *r);
 int denominador(Racional *r);

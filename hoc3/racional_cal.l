@@ -1,7 +1,7 @@
 %option noyywrap
 %{
-#include "hoc.h"
 #include "racional.h"
+#include "hoc.h"
 #include "y.tab.h"
 
 void RmWs(char* str);
@@ -18,18 +18,13 @@ sub [n]
 fr [+]
 racionalnum {ws}*{sub}?{ws}*{number}{ws}*{fr}{ws}*{number}{ws}*
 NUMBER {ws}*{sub}?{ws}*{digits}+{ws}*[\.]?{ws}*{digits}*{ws}*
+
 %%
 {letters} {
   RmWs(yytext);
   Symbol *s;
-  // int c;
-  // char sbuf[200], *p=sbuf;
-  // do {
-  //   *p++=c;
-  //   printf("%s\n", sbuf );
-  // } while ( ( c=getchar())!=EOF && isalnum(c) );
   if( ( s = lookup(yytext) ) == (Symbol *) NULL )
-    s = install( yytext, INDEF, 0.0 );
+    s = installR( yytext, INDEF, NULL );
 
   yylval.sym=s;
   if(s->type == INDEF){
@@ -48,9 +43,8 @@ NUMBER {ws}*{sub}?{ws}*{digits}+{ws}*[\.]?{ws}*{digits}*{ws}*
 {racionalnum} {
  int num, den;
  RmWs(yytext); 
- printf("(%s)", yytext);
- sscanf(yytext,"%d %d", &num, &den); 
- yylval.racionales=creaRacional(num, den);
+ sscanf(yytext,"%d %d", &num, &den);
+ yylval.racional_ = creaRacional(num, den, (double)((double)num/(double)den), 1);
  return racionalnum;}
 {op} |
 \n {return *yytext;}

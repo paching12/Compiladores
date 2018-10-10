@@ -1,7 +1,7 @@
 %{
 
-#include "hoc.h"
 #include "racional.h"
+#include "hoc.h"
 #include <math.h>
 #define MSDOS
 
@@ -11,20 +11,38 @@ void warning(char *s, char *t);
 void execerror(char *s, char *t);
 void fpecatch();
 extern double Pow(double, double);
+// typedef double (*apf)(double);
+// static struct {		Predefinidos 
+// char *name;
+
+// double	(*func)();
+// } builtins_[] =	{
+// "sin",	sin,
+// "cos" ,	cos,
+// "atan",	atan,
+// "log", log,
+// "log10", log10,
+// "exp", exp,
+// "sqrt",	sqrt,   /*	verifica rango */
+// "int" ,	integer,
+// //"abs",	fabs,
+// 0,	0
+// };
 
 %}
 %union {
 	double val;
+	char * bltin;
 	Symbol *sym;
-	RacionalAP racionales;
+	RacionalAP racional_;
 }
 
-%token <racionales> racionalnum
+%token <racional_> racionalnum 
 %token <val> NUMBER
 %token <sym> VAR BLTIN INDEF
-%type <val> expr asgn
+%type <racional_> asgn expr
 
-// %right '='
+%right '='
 %left '+' '-'
 %left '*' '/'
 %left UNARYMINUS
@@ -34,36 +52,32 @@ extern double Pow(double, double);
 list:   
 	| list '\n'
 	| list asgn '\n' { printf("%s\n", "assing" ); }
-	| list expr '\n'  { printf("\t%.8g\n", $2); }
+	| list expr '\n'  { imprimirR( $2 );}
 	| list error '\n' { yyerrok; } 
 	;
 asgn:	VAR '=' expr {$$=$1->u.val=$3; $1->type=VAR;}
 	;
-expr:    NUMBER { $$ = $1; }
-	| VAR { if($1->type == INDEF)
+expr: VAR { if($1->type == INDEF)
 				execerror("variable no definida ",$1->name);
 			$$=$1->u.val;
-			printf("%s\n", "VAR definida");
+			//printf("%s\n", "VAR definida");
 	      }
 	| asgn
-	| BLTIN  '(' expr ')' { $$=(*($1->u.ptr))($3);}
-		| expr '+' expr { $$ = $1 + $3; }
-		| expr '-' expr { $$ = $1 - $3; }
-		| expr '*' expr { $$ = $1 * $3; }
-		| expr '/' expr { $$ = $1 / $3; }
-	| expr '^' expr     { $$=Pow($1, $3);}
-    | '(' expr ')'      { $$ = $2;}
-	| '-' expr %prec UNARYMINUS { $$= -$2; }
+	| BLTIN  '(' expr ')' {
+		$$= creaRacional( 1,1,(*($1->u.ptr))( $3 ), 0 ); 
+	}
+    | '(' expr ')'	{ $$ = $2;}
+	//| '-' expr %prec UNARYMINUS { $$= -$2; }
 
 	| racionalnum { 
-		if($1 -> den==0.0)
+		if($1 -> den == 0.0)
 			execerror("division por cero", "");
-		$$ = convertirRacionalDouble( $1 ); 
+		$$ = $1; 
 	}
-      | racionalnum '+' racionalnum { $$ = convertirRacionalDouble( racionalSuma( $1, $3 ) ); }
-      | racionalnum '-' racionalnum { $$ = convertirRacionalDouble( racionalResta( $1, $3 ) ); }
-      | racionalnum '*' racionalnum { $$ = convertirRacionalDouble( racionalMultiplicar( $1, $3 ) ); }
-      | racionalnum '/' racionalnum { $$ = convertirRacionalDouble( racionalDividir( $1, $3 ) ); }
+      | expr '+' expr { $$ = racionalSuma( $1, $3 ); }
+      | expr '-' expr { $$ = racionalResta( $1, $3 ); }
+      | expr '*' expr { $$ = racionalMultiplicar( $1, $3 ); }
+      | expr '/' expr { $$ = racionalDividir( $1, $3 ); }
 	;
 %%
 
@@ -94,49 +108,9 @@ void fpecatch(){
 	execerror("excepcion de punto flotante", (char *)0);
 }
 
-// int yylex (){
-//   	int c;
+// apf busca(){
 
-//   	while ((c = getchar ()) == ' ' || c == '\t')  
-//   		;
-//  	if (c == EOF)                            
-//     		return 0;
-//   	if (c == '.' || isdigit (c))                
-//     	{
-//       		ungetc (c, stdin);
-//       		scanf ("%lf", &yylval.val);
-//                 //puts("NUMBER");
-// 	      	return NUMBER;
-//     	}
-// 	if(isalpha(c)){
-// 		Symbol *s;
-// 		char sbuf[200], *p=sbuf;
-// 		do {
-// 			*p++=c;
-// 		} while ((c=getchar())!=EOF && isalnum(c));
-// 		ungetc(c, stdin);
-// 		*p='\0';
-// 		if((s=lookup(sbuf))==(Symbol *)NULL)
-// 			s=install(sbuf, INDEF, 0.0);
-// 		yylval.sym=s;   
-//                 if(s->type == INDEF){
-// 			return VAR;
-//                 } else {
-//  		//printf("func=(%s) tipo=(%d) \n", s->name, s->type);
-//                         return s->type;
-//                 }
-// 	}
-//   	if(c == '\n'){
-//                 //puts("enter");
-// 		lineno++;
-//         }
-//         /*if( c== '(')
-// 		puts("(");
-//         if( c== ')')
-// 		puts(")");*/
-//   	return c;                                
-// }
-
+// }//end busca
 void yyerror (char *s)  /* Llamada por yyparse ante un error */
 {
 	warning(s, (char *) 0);

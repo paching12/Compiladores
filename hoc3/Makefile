@@ -1,7 +1,7 @@
 Gram=y.tab.c y.tab.h 
 
 all: $(Gram) lex.yy.c math.c symbol.c init.c racional.c
-	@gcc -o racio y.tab.c lex.yy.c math.c symbol.c init.c  racional.c
+	@gcc -o racio y.tab.c lex.yy.c math.c symbol.c init.c  racional.c -lm
 	@echo Compiled
 
 init.c:

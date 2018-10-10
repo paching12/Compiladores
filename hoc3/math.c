@@ -3,41 +3,37 @@
 #include  <errno.h>
 
 extern    int	errno;
-double    errcheck();
+double   errcheck();
 
 
-double  Log(Racional *x)
+double  Log(double x)
 {
-
-	int num = numerador( x );
-	int den = denominador( x );
-	int entero = num / den;
-	return errcheck(log(entero), "log");
+	return errcheck(log(x), "log");
 }
 
-double  Log10(Racional *x)
-{
-	int num = numerador( x );
-	int den = denominador( x );
-	int entero = num / den;
-	return  errcheck(log10(entero), "log10"); 
-}
+// double  Log10(Racional *x)
+// {
+// 	int num = numerador( x );
+// 	int den = denominador( x );
+// 	int entero = num / den;
+// 	return  errcheck(log10(entero), "log10"); 
+// }
 
-double  Exp(Racional *x)
-{
-	int num = numerador( x );
-	int den = denominador( x );
-	int entero = num / den;
-	return  errcheck(exp(entero) , "exp"); 
-} 
+// double  Exp(Racional *x)
+// {
+// 	int num = numerador( x );
+// 	int den = denominador( x );
+// 	int entero = num / den;
+// 	return  errcheck(exp(entero) , "exp"); 
+// } 
 
-double  Sqrt(Racional *x)
-{
-	int num = numerador( x );
-	int den = denominador( x );
-	int entero = num / den;
-	return  errcheck(sqrt(entero), "sqrt");
-}
+// double  Sqrt(Racional *x)
+// {
+// 	int num = numerador( x );
+// 	int den = denominador( x );
+// 	int entero = num / den;
+// 	return  errcheck(sqrt(entero), "sqrt");
+// }
 
 double Pow(Racional *x, double y)
 {
