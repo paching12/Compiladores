@@ -60,11 +60,11 @@ asgn:	VAR '=' expr {$$=$1->u.val=$3; $1->type=VAR;}
 expr: VAR { if($1->type == INDEF)
 				execerror("variable no definida ",$1->name);
 			$$=$1->u.val;
-			//printf("%s\n", "VAR definida");
 	      }
 	| asgn
 	| BLTIN  '(' expr ')' {
-		$$= creaRacional( 1,1,(*($1->u.ptr))( $3 ), 0 ); 
+		printf("sen() = %lf\n",sin( $3 -> dec ) );
+		$$= creaRacional( 1,1,(*($1->u.ptr))( $3 -> dec ), 0 ); 
 	}
     | '(' expr ')'	{ $$ = $2;}
 	//| '-' expr %prec UNARYMINUS { $$= -$2; }

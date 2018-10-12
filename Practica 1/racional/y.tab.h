@@ -40,36 +40,20 @@
       know about them.  */
    enum yytokentype {
      racionalnum = 258,
-     NUMBER = 259,
-     VAR = 260,
-     BLTIN = 261,
-     INDEF = 262,
-     UNARYMINUS = 263
+     number = 259,
+     fr = 260
    };
 #endif
 /* Tokens.  */
 #define racionalnum 258
-#define NUMBER 259
-#define VAR 260
-#define BLTIN 261
-#define INDEF 262
-#define UNARYMINUS 263
+#define number 259
+#define fr 260
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-#line 33 "hoc3.y"
-{
-	double val;
-	char * bltin;
-	Symbol *sym;
-	RacionalAP racional_;
-}
-/* Line 1529 of yacc.c.  */
-#line 72 "y.tab.h"
-	YYSTYPE;
+typedef int YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
