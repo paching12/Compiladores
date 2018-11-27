@@ -9,7 +9,9 @@
 Racional *creaRacional(int num, int den, double dec, int type){
    Racional *nvo;
    if(den==0)
+{
 	return (Racional *)NULL;
+}
    nvo=(Racional *)malloc(sizeof(Racional));
    if(!nvo){
 	puts("no hay memoria para crear Racional ");
@@ -70,7 +72,7 @@ Racional* racionalDividir(Racional *r, Racional *s){
 		if( s -> dec != 0 )
 			nvo = creaRacional(1, 1, (double)(r -> dec / s -> dec), 0 );
 		else
-			printf("DivisÃ³n sobre cero .-.\n");
+			printf("Divisón sobre cero .-.\n");
 	} else {
 		int nvonum = r -> num * s -> den;
 		int nvoden = r -> den * s -> num;
@@ -92,9 +94,9 @@ double convertirRacionalDouble( Racional * r ) {
 void imprimirR(void *r){
 	Racional *p = (Racional*)r;
 	if( p -> type == 1 )
-		printf("(%d / %d) = (%0.2lf)\n", p -> num, p -> den, p -> dec);
+		printf("(%d / %d) = (%lf)\n", p -> num, p -> den, p -> dec);
 	else
-		printf("= %0.2lf\n", p -> dec);
+		printf("= %lf\n", p -> dec);
 }
 
 Racional *copiar(Racional *r){

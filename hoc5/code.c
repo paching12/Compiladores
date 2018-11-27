@@ -4,12 +4,12 @@
 static  Datum  stack[NSTACK];  /* la pila */
 static  Datum   *stackp;       /* siguiente lugar libre en la pila */
 #define NPROG   2000
-Inst    prog[NPROG];    /* la m谩quina */
-Inst    *progp;         /* siguiente lugar libre para la generaci贸n de c贸digo */
-Inst    *pc;	/* contador de programa durante la ejecuci贸n */
+Inst    prog[NPROG];    /* la m醧uina */
+Inst    *progp;         /* siguiente lugar libre para la generaci髇 de c骴igo */
+Inst    *pc;	/* contador de programa durante la ejecuci髇 */
 
 
-initcode()      /* inicializaci贸n para la generaci贸n de c贸digo */ {
+initcode()      /* inicializaci髇 para la generaci髇 de c骴igo */ {
 stackp = stack;
 progp = prog;
 }
@@ -29,7 +29,20 @@ execerror("stack underflow", (char *) 0);
 return  *--stackp;
 }
 
+Inst   *code(Inst f) /*   instalar una instrucci髇 u operando   */
+{
+Inst *oprogp = progp;
+	if (progp >= &prog [ NPROG ])
+		execerror("program too big", (char *) 0);
+	*progp++ = f;
+	return oprogp;
+}
 
+execute(Inst *p)	/*   ejecuci髇 con la m醧uina   */
+{
+for  (pc  =  p;   *pc != STOP; ) 
+	(*(*pc++))();
+}
 constpush( )	/* meter una constante a la pila  */
 {
 Datum d;
@@ -43,31 +56,35 @@ Datum d;
 d.sim  =  (Symbol   *)(*pc++);
 push(d);
 }
-
 whilecode() {
 Datum d;
-Inst  *savepc  = pc;	/*  cuerpo de la iteraci贸n  */
-execute(savepc+2);     /*   condici贸n   */ 
+Inst  *savepc  = pc;	/*  cuerpo de la iteraci髇  */
+execute(savepc+2);     /*   condici髇   */ 
 d  =  pop(); 
-while   (d.val)   {
-	execute(*((Inst  **)(savepc)));     /*  cuerpo  */
-	execute(savepc+2);
-	d  = pop(); 
-}// end while 
-	pc  =  *((Inst  **)(savepc+1));     /*   siguiente proposici贸n   */
+while   (d.val->dec)   {
+execute(*((Inst  **)(savepc)));     /*  cuerpo  */
+execute(savepc+2);
+d  = pop(); 
+} 
+pc  =  *((Inst  **)(savepc+1));     /*   siguiente proposici髇   */
 }
 
-ifcode() {
+
+ifcode()
+{
 Datum d;
 Inst  *savepc  = pc;	/* parte then */
-execute(savepc+3);	/*  condici贸n   */
+execute(savepc+3);	/*  condici髇   */
 d  =  pop(); 
-if (d.val)
-execute(*((Inst   **)(savepc))); 
-else  if   (*((Inst  **)(savepc+1)))   /*  驴parte else?   */
+imprimirR(d.val);
+if(d.val->dec)
+	execute(*((Inst **)(savepc)));
+else if (*((Inst **)(savepc+1)))
 execute(*(( Inst  **) (savepc+1)));
-pc  =  *((Inst  **)(savepc+2));	/*  siguiente proposici贸n   */ 
+pc = *((Inst **)(savepc+2));
 }
+
+
 
 eval( )	/*  evaluar una variable en la pila   */
 {
@@ -78,6 +95,9 @@ execerror("undefined variable",
 d.sim->nombre); 
 d.val   =  d.sim->u.val; push(d);
 }
+
+
+
 
 add( )	/*   sumar los dos elementos superiores de la pila   */
 {
@@ -115,90 +135,89 @@ d1.val = racionalDividir(d1.val, d2.val);
 push(d1);
 }
 
-negate()
-{
-Datum d; 
-d = pop(); 
-d.val->dec  =  -d.val->dec; 
-push(d);
-}
-
 gt() {
-Datum d1,  d2;
+Datum d1,  d2,d3;
 d2 = pop();
 d1 = pop();
-d1.val->dec  =   (double)(d1.val->dec  > d2.val->dec);
-push(d1);
+d3.val = creaRacional(0, 1, 0.0, 0);
+d3.val->dec =   (double)(d1.val->dec  > d2.val->dec);
+push(d3);
 }
 
 lt()
 {
-Datum d1,  d2;
+Datum d1,  d2,d3;
 d2 = pop();
 d1 = pop();
-d1.val->dec  =   (double)(d1.val->dec  < d2.val->dec);
-push(d1);
+d3.val = creaRacional(0, 1, 0.0, 0);
+d3.val->dec  =   (double)(d1.val->dec  < d2.val->dec);
+push(d3);
 }
 
 ge( ) {
-Datum d1,  d2;
+Datum d1,  d2,d3;
 d2  = pop();
 d1  = pop();
-d1.val->dec   =   (double)(d1.val->dec  >= d2.val->dec);
-push(d1) ;
+d3.val = creaRacional(0, 1, 0.0, 0);
+d3.val->dec   =   (double)(d1.val->dec  >= d2.val->dec);
+push(d3) ;
 }
 
 le() {
-Datum d1,  d2;
+Datum d1,  d2,d3;
 d2   =  pop();
 d1   =  pop();
-d1.val -> dec  =   (double)(d1.val -> dec   <=  d2.val->dec);
-push(d1);
+d3.val = creaRacional(0, 1, 0.0, 0);
+d3.val->dec  =   (double)(d1.val->dec   <=  d2.val->dec);
+push(d3);
 }
 
 eq( ) {
-Datum d1,  d2;
+Datum d1,  d2,d3;
 d2  = pop();
 d1  = pop();
-d1.val -> dec  =   (double) (d1.val -> dec  ==  d2.val->dec);
-push(d1);
+d3.val = creaRacional(0, 1, 0.0, 0);
+d3.val->dec  =   (double) (d1.val->dec  ==  d2.val->dec);
+push(d3);
 }
 
 ne(){
-Datum d1, d2;
+Datum d1, d2,d3;
 d2 = pop();
 d1 = pop();
-d1.val -> dec = (double)(d1.val -> dec != d2.val -> dec);
-push(d1);
+d3.val = creaRacional(0, 1, 0.0, 0);
+d3.val->dec = (double)(d1.val->dec != d2.val->dec);
+push(d3);
 }
 
 and()
 {
-Datum d1,   d2;
+Datum d1,   d2,d3;
 d2   = pop();
 d1   = pop();
-d1.val -> dec = (double)(d1.val -> dec   !=   0.0 && d2.val -> dec   !=  0.0);
-push(d1);
+d3.val = creaRacional(0, 1, 0.0, 0);
+d3.val->dec = (double)(d1.val->dec   !=   0.0 && d2.val->dec   !=  0.0);
+push(d3);
 }
 
 or()
 {
-Datum d1, d2;
+Datum d1, d2,d3;
 d2 = pop();
 d1 = pop();
-d1.val -> dec = (double)(d1.val -> dec != 0.0 || d2.val -> dec != 0.0);
-push(d1);
+d3.val = creaRacional(0, 1, 0.0, 0);
+d3.val->dec = (double)(d1.val->dec != 0.0 || d2.val->dec!=0.0);
+push(d3);
 }
-
 
 not( )
 {
-Datum d;
+Datum d,d3;
 d = pop();
-d.val -> dec = (double)(d.val -> dec == 0.0);
-push(d);
+d3.val = creaRacional(0, 1, 0.0, 0);
+d3.val->dec = (double)(d.val->dec == 0.0);
+push(d3);
 }
-
 
 assign( )        /* asignar el valor superior al siguientevalor */ 
 {
@@ -218,13 +237,13 @@ Datum d;
 d = pop();
 imprimirR(d.val);
 }
-
-prexpr( ) /*   imprimir el valor num茅rico   */
+prexpr( ) /*   imprimir el valor num閞ico   */
 {
 Datum d;
 d = pop();
-printf("%.8g\n",   d.val->dec); 
+printf("\t\t");imprimirR(d.val);
 }
+
 
 BLTIN( )/*  evaluar un predefinido en el tope de la pila  */
 {
@@ -236,17 +255,4 @@ BLTIN( )/*  evaluar un predefinido en el tope de la pila  */
 }
  
 
-Inst   *code(Inst f) /*   instalar una instrucci贸n u operando   */
-{
-Inst *oprogp = progp;
-	if (progp >= &prog [ NPROG ])
-		execerror("program too big", (char *) 0);
-	*progp++ = f;
-	return oprogp;
-}
 
-execute(Inst p)	/*   ejecuci贸n con la m谩quina   */
-{
-for  (pc  =  p;   *pc != STOP; ) 
-	(*(*pc++))();
-}

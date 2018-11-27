@@ -7,22 +7,23 @@
 void RmWs(char* str);
 extern YYSTYPE yylval;
 %}
-/* Add your Flex definitions here              */
-/* Some definitions are already provided to you*/
-op [-+*/()=]
+op [-+*/()={}]
 ws [ \t]+
 digits [0-9]
 var [a-zA-z][a-zA-Z0-9]*
-GT [>]
-GE [>=]
-LE [<]
-EQ [=]
-NE [!]
-OR [|]
-AND [&]
 number (0|[1-9]+{digits}*)
 im [i]
 fr [+]
+GT[>]
+GE[>][=]
+LT[<]
+LE[<][=]
+EQ[=][=]
+NE[!][=]
+AND[&][&]
+OR[|][|]
+NOT[!]
+
 racionalnum {ws}*[-]*{ws}*{number}{ws}*{fr}{ws}*{number}{ws}*
 
 %%
@@ -35,7 +36,38 @@ racionalnum {ws}*[-]*{ws}*{number}{ws}*{fr}{ws}*{number}{ws}*
 	return s->tipo == undef ? var: s -> tipo;
 }
 {GT} {
-  return follow('=', GE, GT);
+	
+	return GT;
+}
+{GE} {
+	
+	return GE;
+}
+{LT} {
+	
+	return LT;
+}
+{LE} {
+	
+	return LE;
+}
+{EQ} {
+	
+	return EQ;
+}
+{NE} {
+	return NE;
+}
+{AND} {
+	return AND;
+}
+{OR} {
+	
+	return OR;
+}
+{NOT} {
+	
+	return NOT;
 }
 
 {racionalnum} {
@@ -44,9 +76,10 @@ racionalnum {ws}*[-]*{ws}*{number}{ws}*{fr}{ws}*{number}{ws}*
  sscanf(yytext,"%d %d", &num, &den); 
  yylval.sim=install("",racionalnum,creaRacional(num, den, (double)((double)num/(double)den), 1));
  return racionalnum;}
-
-{op} |
 \n {
+	return '\n';
+}
+{op} {
 	return *yytext;}
 {ws} { /* Do nothing */ } 
 . { /* Do nothing */ }
@@ -58,7 +91,9 @@ racionalnum {ws}*[-]*{ws}*{number}{ws}*{fr}{ws}*{number}{ws}*
 /* output:       nothing                  */
 /* side effect:  whitespace in the        */
 /*               original string removed  */
-/* return value: none                     */
+/* return value: none */  
+
+               
 void RmWs(char* str) {
   int i = 0, j = 0;
   char temp[strlen(str) + 1];
@@ -72,4 +107,3 @@ void RmWs(char* str) {
   }
  str[j] = '\0';
 }
-

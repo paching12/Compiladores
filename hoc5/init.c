@@ -4,7 +4,15 @@
 #include <stdio.h>
 
 //extern double   Log(), Log10(), Sqrt(), Exp( ) , integer ( ) ;
-
+static struct { char   *name;	/* Palabras clave */
+int    kval;
+} keywords[] = {
+"if",		IF,
+"else" ,	ELSE,
+"while",	WHILE,
+"print",	PRINT,
+0,      0,
+};
 static struct {         /* Constantes */ char *name; double cval;
 } consts[] = {
 "PI",    3.14159265358979323846,
@@ -36,10 +44,15 @@ init( )  /* instalar constantes y predefinidos en la tabla */
 int i;
 Symbol *s;
 RacionalAP r;
+for (i = 0; keywords[i].name; i++)
+{
+	install(keywords[i].name, keywords[i].kval, 0.0);
+
+}
 for (i = 0; consts[i].name; i++) {
 	r = creaRacional( 0, 1, consts[i].cval, 0 );
 	install(consts[i].name, var, r );
-} // end for
+} 
 
 for (i = 0; builtins[i].name; i++) {
 	r = creaRacional( 0, 1, 0.0, 0 );

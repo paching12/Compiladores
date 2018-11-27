@@ -20,20 +20,22 @@ typedef struct Symbol
 Symbol *install(),*lookup();
 
 /*  prototypes of the provided functions */ 
-typedef union Datum {   /* tipo de la pila del int√©rprete */
+typedef union Datum {   /* tipo de la pila del intÈrprete */
+double ble;
 RacionalAP  val;
 Symbol  *sim; } Datum; 
 
 extern Datum pop();
-typedef int (*Inst)();  /* instrucci√≥n de m√°quina */ 
+typedef int (*Inst)();  /* instrucciÛn de m·quina */ 
 
 #define STOP    (Inst) 0
-extern	Inst prog[];
-extern	eval(), add(), sub(), mul(), divi(), negate();
+extern	Inst prog[],*progp,*code();
+extern	eval(), add(), sub(), mul(), divi();
 extern	assign(), BLTIN(), varpush(), constpush(), print();
 extern	prexpr();
 extern	gt(), lt(), eq(), ge(), le(), ne(), and() , or(), not();
 extern	ifcode(), whilecode();
+
 Racional *creaRacional(int num, int den, double dec, int type  );
 void asignar(Racional *r, int num, int den);
 int numerador(Racional *r);
@@ -49,4 +51,3 @@ Racional *copiar(Racional *r);
 
 /*  prototypes of the provided functions */ 
 /* define the return type of FLEX */
-

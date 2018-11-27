@@ -15,7 +15,7 @@ digits [0-9]
 var [a-zA-z][a-zA-Z0-9]*
 number (0|[1-9]+{digits}*)
 im [i]
-fr [+]
+fr [!]
 racionalnum {ws}*[-]*{ws}*{number}{ws}*{fr}{ws}*{number}{ws}*
 
 %%
@@ -31,7 +31,7 @@ racionalnum {ws}*[-]*{ws}*{number}{ws}*{fr}{ws}*{number}{ws}*
 {racionalnum} {
  int num, den;
  RmWs(yytext); 
- sscanf(yytext,"%d %d", &num, &den); 
+ sscanf(yytext,"%d!%d", &num, &den); 
  yylval.sim=install("",racionalnum,creaRacional(num, den, (double)((double)num/(double)den), 1));
  return racionalnum;}
 

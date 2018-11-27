@@ -384,10 +384,10 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    1,    1,    1,    1,    1,    1,    1,    4,
-        4,    4,    5,    1,    6,    1,    4,    7,    8,    8,
+        1,    2,    4,    1,    1,    1,    1,    1,    1,    5,
+        5,    5,    5,    1,    6,    1,    5,    7,    8,    8,
         8,    8,    8,    8,    8,    8,    8,    1,    1,    1,
-        4,    1,    1,    1,    9,    9,    9,    9,    9,    9,
+        5,    1,    1,    1,    9,    9,    9,    9,    9,    9,
         9,    9,    9,    9,    9,    9,    9,    9,    9,    9,
         9,    9,    9,    9,    9,    9,    9,    9,    9,    9,
        10,   10,   10,   10,   10,   10,    9,    9,    9,    9,
@@ -418,9 +418,9 @@ static yyconst flex_int32_t yy_meta[11] =
 
 static yyconst flex_int16_t yy_base[30] =
     {   0,
-        0,    0,   27,   38,    9,   38,   38,   24,   16,   15,
-        0,    0,    0,    0,    0,   19,    0,   22,   12,    0,
-        0,    0,   17,   29,   12,    5,    0,   38,   10
+        0,    0,   27,   37,    9,   37,   37,   24,   16,   14,
+        0,    0,    0,    0,    0,   19,    0,   21,   16,    0,
+        0,    0,   17,   28,   12,    5,    0,   37,   10
     } ;
 
 static yyconst flex_int16_t yy_def[30] =
@@ -430,22 +430,22 @@ static yyconst flex_int16_t yy_def[30] =
        29,   18,   28,   28,   28,   24,   24,    0,   28
     } ;
 
-static yyconst flex_int16_t yy_nxt[49] =
+static yyconst flex_int16_t yy_nxt[48] =
     {   0,
-        4,    5,    6,    7,    7,    8,    9,   10,   11,   11,
-       12,   21,   26,   25,   13,   14,   15,   17,   25,   19,
-       18,   19,   20,   22,   28,   16,   28,   28,   23,   24,
-       25,   28,   28,   28,   28,   26,   27,    3,   28,   28,
-       28,   28,   28,   28,   28,   28,   28,   28
+        4,    5,    6,    4,    7,    8,    9,   10,   11,   11,
+       12,   21,   26,   25,   13,   14,   15,   17,   25,   18,
+       19,   20,   22,   19,   28,   16,   28,   23,   24,   25,
+       28,   28,   28,   28,   26,   27,    3,   28,   28,   28,
+       28,   28,   28,   28,   28,   28,   28
     } ;
 
-static yyconst flex_int16_t yy_chk[49] =
+static yyconst flex_int16_t yy_chk[48] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        5,   29,   26,   25,    5,    5,    5,    9,   23,   19,
-        9,   10,   10,   18,   16,    8,    3,    0,   18,   18,
-       24,    0,    0,    0,    0,   24,   24,   28,   28,   28,
-       28,   28,   28,   28,   28,   28,   28,   28
+        5,   29,   26,   25,    5,    5,    5,    9,   23,    9,
+       10,   10,   18,   19,   16,    8,    3,   18,   18,   24,
+        0,    0,    0,    0,   24,   24,   28,   28,   28,   28,
+       28,   28,   28,   28,   28,   28,   28
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -715,7 +715,7 @@ yy_match:
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 38 );
+		while ( yy_base[yy_current_state] != 37 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -757,7 +757,7 @@ YY_RULE_SETUP
 {
  int num, den;
  RmWs(yytext); 
- sscanf(yytext,"%d %d", &num, &den); 
+ sscanf(yytext,"%d!%d", &num, &den); 
  yylval.sim=install("",racionalnum,creaRacional(num, den, (double)((double)num/(double)den), 1));
  return racionalnum;}
 	YY_BREAK

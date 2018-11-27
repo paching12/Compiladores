@@ -11,12 +11,10 @@ Symbol *lookup(s)
 	for (sp = simlista; sp != (Symbol *) 0; sp = sp->sig)
 		if(strcmp(sp->nombre,s)==0)
 			return sp;
-		// else
-		// 	printf("No encontramos a %s con %s\n", s, sp->nombre );
 
 	return 0;
 }
-Symbol *install(char *s,int t, RacionalAP r) /* instalar s en la tabla de sÃ­mbolos */
+Symbol *install(char *s,int t, RacionalAP r) /* instalar s en la tabla de símbolos */
 {
 	Symbol *sp;
 	char *emalloc();
@@ -36,5 +34,3 @@ char * emalloc(n)
 	p = malloc(n);
 	return p;
 }
-	
-
