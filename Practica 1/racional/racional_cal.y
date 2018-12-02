@@ -33,25 +33,6 @@ exp:  racionalnum { $$ = $1; }
 char *progname;
 int lineno = 1;
 
-/*void main (int argc, char *argv[]){
-	progname=argv[0];
-  	yyparse ();
-}*/
-/*int yylex (){
-  	int c;
-  	while ((c = getchar ()) == ' ' || c == '\t')  
-  		;
- 	if (c == EOF)                            
-    		return 0;
-  	if ( isdigit (c) ) {
-      		ungetc (c, stdin);
-      		scanf ("%d", &yylval);
-	      return number;
-    	}
-  	if(c == '\n')
-		lineno++;
-  	return c;                                
-}*/
 void warning(char *s, char *t){
 	fprintf (stderr, "%s: %s", progname, s);
 	if(t)

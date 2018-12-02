@@ -3,7 +3,6 @@
 #include "y.tab.h"
 #include <math.h>
 
-//extern double Log(), Log10(), Sqrt(), Exp( ) , integer ( ) ;
 extern integer();
 static struct {         /* Constantes */ char *name; double cval;
 } consts[] = {

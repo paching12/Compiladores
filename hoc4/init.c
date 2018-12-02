@@ -45,6 +45,5 @@ for (i = 0; builtins[i].name; i++) {
 	r = creaRacional( 0, 1, 0.0, 0 );
 	s = install(builtins[i].name, bltin, r);
 	s->u.ptr = builtins[i].func;
-	printf("instalando %s tipo = %d\n", s->nombre, r -> type );
 }
 }

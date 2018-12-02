@@ -409,7 +409,7 @@ static const yytype_int8 yyrhs[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    14,    14,    15,    16,    18,    19,    20,    21,    22,
-      23,    24,    25,    26
+      24,    25,    26,    27
 };
 #endif
 
@@ -1349,22 +1349,22 @@ yyreduce:
     break;
 
   case 10:
-#line 23 "racional_cal.y"
+#line 24 "racional_cal.y"
     { (yyval) = racionalSuma( (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]) ); }
     break;
 
   case 11:
-#line 24 "racional_cal.y"
+#line 25 "racional_cal.y"
     { (yyval) = racionalResta( (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]) ); }
     break;
 
   case 12:
-#line 25 "racional_cal.y"
+#line 26 "racional_cal.y"
     { (yyval) = racionalMultiplicar( (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]) ); }
     break;
 
   case 13:
-#line 26 "racional_cal.y"
+#line 27 "racional_cal.y"
     { (yyval) = racionalDividir( (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]) ); }
     break;
 
@@ -1584,7 +1584,7 @@ yyreturn:
 }
 
 
-#line 28 "racional_cal.y"
+#line 29 "racional_cal.y"
 
 
 #include <stdio.h>
@@ -1592,25 +1592,6 @@ yyreturn:
 char *progname;
 int lineno = 1;
 
-/*void main (int argc, char *argv[]){
-	progname=argv[0];
-  	yyparse ();
-}*/
-/*int yylex (){
-  	int c;
-  	while ((c = getchar ()) == ' ' || c == '\t')  
-  		;
- 	if (c == EOF)                            
-    		return 0;
-  	if ( isdigit (c) ) {
-      		ungetc (c, stdin);
-      		scanf ("%d", &yylval);
-	      return number;
-    	}
-  	if(c == '\n')
-		lineno++;
-  	return c;                                
-}*/
 void warning(char *s, char *t){
 	fprintf (stderr, "%s: %s", progname, s);
 	if(t)
